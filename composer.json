@@ -1,0 +1,14 @@
+{
+    "name": "arbrix/alphasms-lib",
+    "type": "library",
+    "version": "1.9",
+    "authors": [{
+        "name": "Dmitry Skachko",
+        "company": "AlphaSMS.com.ua"
+    }],
+    "homepage": "https://alphasms.ua",
+    "dist": {
+        "url": "https://alphasms.ua/storage/files/alphasms-client-api.zip",
+        "type": "zip"
+    }
+}
