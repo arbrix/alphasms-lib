@@ -10,5 +10,8 @@
     "dist": {
         "url": "https://alphasms.ua/storage/files/alphasms-client-api.zip",
         "type": "zip"
+    },
+    "autoload": {
+        "files": ["gump.class.php"]
     }
 }
