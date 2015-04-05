@@ -12,6 +12,6 @@
         "type": "zip"
     },
     "autoload": {
-        "files": ["gump.class.php"]
+        "files": ["smsclient.class.php"]
     }
 }
