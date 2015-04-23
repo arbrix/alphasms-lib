@@ -61,65 +61,67 @@ class SMSClient
         $this->_key = $key;
     }
 
-    //IN: 	sender name, phone of receiver, text message in UTF-8 - if long - will be auto split
-    //		send_dt - date-time of sms sending, wap - url for Wap-Push link, flash - for Flash sms.
-    //OUT: 	message_id to track delivery status, if empty message_id - check errors via $this->getErrors()
+    //IN: sender name, phone of receiver, text message in UTF-8 - if long - will be auto split
+    //send_dt - date-time of sms sending, wap - url for Wap-Push link, flash - for Flash sms.
+    //OUT: message_id to track delivery status, if empty message_id - check errors via $this->getErrors()
     public function sendSMS($from, $to, $message, $send_dt = 0, $wap = '', $flash = 0)
     {
         if(!$send_dt)
             $send_dt = date('Y-m-d H:i:s');
         $d = is_numeric($send_dt) ? $send_dt : strtotime($send_dt);
-        $data = array(	'from'=>$from,
-                        'to'=>$to,
-                        'message'=>$message,
-                        'ask_date'=>date(DATE_ISO8601, $d),
-                        'wap'=>$wap,
-                        'flash'=>$flash,
-                        'class_version'=>$this->_version);
+        $data = [
+            'from'=>$from,
+            'to'=>$to,
+            'message'=>$message,
+            'ask_date'=>date(DATE_ISO8601, $d),
+            'wap'=>$wap,
+            'flash'=>$flash,
+            'class_version'=>$this->_version
+        ];
         $result = $this->execute('send', $data);
-        if(isset($result['errors']) && count(@$result['errors']))
+        if(isset($result['errors']) && count($result['errors']))
             $this->_errors = $result['errors'];
-        return @$result['id'];
+        return isset($result['id']) ? $result['id'] : null;
     }
 
-    //IN: 	message_id to track delivery status
-    //OUT: 	text name of status
+    //IN: message_id to track delivery status
+    //OUT: text name of status
     public function receiveSMS($sms_id)
     {
         $data = array('id'=>$sms_id);
         $result = $this->execute('receive', $data);
-        if(isset($result['errors']) && count(@$result['errors']))
+        if(isset($result['errors']) && count($result['errors']))
             $this->_errors = $result['errors'];
-        return @$result['status'];
+        return isset($result['status']) ? $result['status'] : null;
     }
 
-    //IN: 	message_id to delete
-    //OUT: 	text name of status
+    //IN: message_id to delete
+    //OUT: text name of status
     public function deleteSMS($sms_id)
     {
         $data = array('id'=>$sms_id);
         $result = $this->execute('delete', $data);
-        if(isset($result['errors']) && count(@$result['errors']))
+        if(isset($result['errors']) && count($result['errors']))
             $this->_errors = $result['errors'];
-        return @$result['status'];
+        return isset($result['status']) ? $result['status'] : null;
     }
 
-    //OUT:	amount in UAH, if no return - check errors
+    //OUT:amount in UAH, if no return - check errors
     public function getBalance()
     {
         $result = $this->execute('balance');
-        if (isset($result['errors']) && count(@$result['errors']))
+        if (isset($result['errors']) && count($result['errors']))
             $this->_errors = $result['errors'];
-        return @$result['balance'];
+        return isset($result['balance']) ? $result['balance'] : null;
     }
 
-    //OUT:	returns number of errors
+    //OUT:returns number of errors
     public function hasErrors()
     {
         return count($this->_errors);
     }
 
-    //OUT:	returns array of errors
+    //OUT:returns array of errors
     public function getErrors()
     {
         return $this->_errors;
